@@ -1,17 +1,22 @@
 
+    <!DOCTYPE html>
     <html><head><meta charset="utf-8">
     <title>AI 决策仪表盘</title>
     <style>
-        body { background: #0d1117; color: #ffd700; font-family: sans-serif; text-align: center; padding-top: 50px; }
-        .card { background: #161b22; border: 2px solid #ffd700; border-radius: 20px; padding: 30px; margin: 30px auto; width: 70%; box-shadow: 0 0 20px rgba(255,215,0,0.1); }
-        .score { font-size: 72px; color: #00ff00; font-weight: bold; }
-        .symbol { color: #58a6ff; font-size: 18px; }
-        .reason { border-top: 1px solid #30363d; margin-top: 20px; padding-top: 15px; color: #8b949e; line-height: 1.6; text-align: left; }
+        body { background: #0d1117; color: #ffd700; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 50px 20px; }
+        h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .time { color: #8b949e; margin-bottom: 40px; }
+        .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 30px; margin: 20px auto; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: transform 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: #ffd700; }
+        .score { font-size: 80px; color: #39d353; font-weight: bold; margin: 20px 0; }
+        .symbol { color: #58a6ff; font-weight: normal; margin-right: 10px; }
+        .reason { border-top: 1px solid #30363d; margin-top: 20px; padding-top: 20px; color: #c9d1d9; line-height: 1.6; text-align: left; }
+        footer { margin-top: 60px; color: #484f58; font-size: 0.9em; }
     </style></head>
     <body>
         <h1>📈 AI 股票决策仪表盘</h1>
-        <p>Gemini 智能分析时刻：2026-03-14 16:54:47</p>
-    
-        <footer style="margin-top: 50px; color: #666;">系统运行正常 | 核心算法: Gemini | 部署环境: GitHub Actions</footer>
+        <div class="time">数据更新时刻: 2026-03-14 17:07:47</div>
+        <div class='card'><h2>暂无数据</h2><p>请检查 STOCK_LIST 格式是否正确。</p></div>
+        <footer>系统运行正常 | 核心算法: Gemini | 部署环境: GitHub Actions</footer>
     </body></html>
     
