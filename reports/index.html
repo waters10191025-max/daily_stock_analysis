@@ -1,50 +1,17 @@
 
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <title>AI 决策仪表盘</title>
-        <style>
-            body { background-color: #0d1117; color: #c9d1d9; font-family: sans-serif; padding: 20px; }
-            .container { max-width: 800px; margin: auto; }
-            .header { text-align: center; border-bottom: 2px solid #ffd700; padding-bottom: 20px; }
-            .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; margin-top: 20px; position: relative; }
-            .stock-name { color: #ffd700; font-size: 24px; margin: 0; }
-            .score { position: absolute; top: 20px; right: 20px; font-size: 48px; color: #39d353; font-weight: bold; }
-            .advice { display: inline-block; background: #238636; color: white; padding: 5px 15px; border-radius: 20px; margin: 10px 0; font-weight: bold; }
-            .reason { color: #8b949e; line-height: 1.6; border-top: 1px solid #30363d; padding-top: 10px; }
-        </style>
-    </head>
+    <html><head><meta charset="utf-8">
+    <title>AI 决策仪表盘</title>
+    <style>
+        body { background: #0d1117; color: #ffd700; font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .card { background: #161b22; border: 2px solid #ffd700; border-radius: 20px; padding: 30px; margin: 30px auto; width: 70%; box-shadow: 0 0 20px rgba(255,215,0,0.1); }
+        .score { font-size: 72px; color: #00ff00; font-weight: bold; }
+        .symbol { color: #58a6ff; font-size: 18px; }
+        .reason { border-top: 1px solid #30363d; margin-top: 20px; padding-top: 15px; color: #8b949e; line-height: 1.6; text-align: left; }
+    </style></head>
     <body>
-        <div class="container">
-            <div class="header">
-                <h1>📈 AI 决策仪表盘</h1>
-                <p>系统更新时间：2026-03-14 15:13</p>
-            </div>
+        <h1>📈 AI 股票决策仪表盘</h1>
+        <p>Gemini 智能分析时刻：2026-03-14 16:54:47</p>
     
-            <div class="card">
-                <div class="score">92</div>
-                <h2 class="stock-name">贵州茅台 <small style="color:#58a6ff">sh600519</small></h2>
-                <div class="advice">建议持有</div>
-                <div class="reason">
-                    <strong>Gemini 核心逻辑：</strong><br>
-                    技术面回踩支撑位，Gemini AI 监测到主力资金流入，短期情绪偏乐观。
-                </div>
-            </div>
-        
-            <div class="card">
-                <div class="score">78</div>
-                <h2 class="stock-name">金风科技 <small style="color:#58a6ff">002202</small></h2>
-                <div class="advice">观望</div>
-                <div class="reason">
-                    <strong>Gemini 核心逻辑：</strong><br>
-                    可再生能源板块近期波动较大，建议等待日线级别放量突破后再行介入。
-                </div>
-            </div>
-        
-            <div style="text-align:center; margin-top:40px; color:#484f58; font-size:12px;">
-                提示：AI 生成内容仅供参考，不构成投资建议
-            </div>
-        </div>
-    </body>
-    </html>
+        <footer style="margin-top: 50px; color: #666;">系统运行正常 | 核心算法: Gemini | 部署环境: GitHub Actions</footer>
+    </body></html>
     
