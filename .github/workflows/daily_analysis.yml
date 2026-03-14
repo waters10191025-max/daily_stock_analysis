@@ -32,5 +32,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # 关键修改：只发布生成的 index.html 文件
           publish_dir: .
-          enable_jekyll: false
+          # 这一行确保只搬运 index.html 这种网页文件，不搬源代码
+          exclude_assets: '.github,api,apps,bot,data_provider,docker,docs,patch,scripts,sources,src,strategies,templates,tests,.dockerignore,.gitignore,AGENTS.md,LICENSE,README.md,SKILL.md,analyzer_service.py,litellm_config.example.yaml,main.py,pyproject.toml,requirements.txt,server.py,setup.cfg,template.html,test.sh,test_env.py,webui.py'
