@@ -3,7 +3,10 @@ name: 每日股票分析
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 8 * * *' # 每天北京时间16:00自动运行
+    - cron: '0 8 * * *'
+
+permissions:
+  contents: write
 
 jobs:
   analyze:
@@ -25,10 +28,9 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python main.py
 
-      - - name: 搬运精美网页到私人网址
+      - name: 搬运精美网页到私人网址
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./reports
-          # 下面这行很重要，哪怕没 index.html 也能列出文件
           enable_jekyll: false
