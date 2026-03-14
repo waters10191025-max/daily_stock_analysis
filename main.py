@@ -1,87 +1,78 @@
 import os
-import pandas as pd
+import yfinance as yf
+import google.generativeai as genai
 from datetime import datetime
 
-def generate_report():
-    # 1. 模拟获取 AI 分析数据 (你可以根据需要修改这里的文字)
-    report_date = datetime.now().strftime("%Y-%m-%d %H:%M")
-    
-    # 假设这是 Gemini AI 给出的真实分析结果
-    stock_data = [
-        {
-            "symbol": "sh600519",
-            "name": "贵州茅台",
-            "score": 92,
-            "advice": "建议持有",
-            "reason": "技术面回踩支撑位，Gemini AI 监测到主力资金流入，短期情绪偏乐观。"
-        },
-        {
-            "symbol": "002202",
-            "name": "金风科技",
-            "score": 78,
-            "advice": "观望",
-            "reason": "可再生能源板块近期波动较大，建议等待日线级别放量突破后再行介入。"
-        }
-    ]
+# 1. 配置 AI 授权
+api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    raise ValueError("❌ 未找到 GEMINI_API_KEY，请在 GitHub Secrets 中配置。")
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel('gemini-1.5-flash') # 使用更快的模型
 
-    # 2. 准备 HTML 内容
+def generate_report():
+    # 获取你要分析的股票列表
+    stock_list = os.getenv("STOCK_LIST", "sh600519.SS").split(",")
+    final_results = []
+    
+    for symbol in stock_list:
+        try:
+            # 2. 自动抓取 yfinance 免费行情数据
+            # 提示：yfinance 对 A 股需要加后缀，如 sh600519.SS
+            ticker = yf.Ticker(symbol)
+            hist = ticker.history(period="5d")
+            price = hist['Close'].iloc[-1]
+            
+            # 3. 让 Gemini 分析
+            prompt = f"分析股票代码 {symbol}，当前价格 {price:.2f}。请给出评分(0-100)、建议和极简核心理由。格式：评分|建议|理由"
+            response = model.generate_content(prompt)
+            res_parts = response.text.strip().split("|")
+            
+            final_results.append({
+                "symbol": symbol,
+                "score": res_parts[0] if len(res_parts)>0 else "N/A",
+                "advice": res_parts[1] if len(res_parts)>1 else "分析中",
+                "reason": res_parts[2] if len(res_parts)>2 else "暂无理由"
+            })
+            print(f"✅ 完成 {symbol} 的 AI 分析。")
+        except Exception as e:
+            print(f"❌ 分析 {symbol} 时出错: {e}")
+
+    # 4. 生成你已经成功的“黑金仪表盘”网页
     os.makedirs("reports", exist_ok=True)
-    html_path = "reports/index.html"
-    
-    # 构建网页头部
-    html_start = f"""
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <title>AI 决策仪表盘</title>
-        <style>
-            body {{ background-color: #0d1117; color: #c9d1d9; font-family: sans-serif; padding: 20px; }}
-            .container {{ max-width: 800px; margin: auto; }}
-            .header {{ text-align: center; border-bottom: 2px solid #ffd700; padding-bottom: 20px; }}
-            .card {{ background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; margin-top: 20px; position: relative; }}
-            .stock-name {{ color: #ffd700; font-size: 24px; margin: 0; }}
-            .score {{ position: absolute; top: 20px; right: 20px; font-size: 48px; color: #39d353; font-weight: bold; }}
-            .advice {{ display: inline-block; background: #238636; color: white; padding: 5px 15px; border-radius: 20px; margin: 10px 0; font-weight: bold; }}
-            .reason {{ color: #8b949e; line-height: 1.6; border-top: 1px solid #30363d; padding-top: 10px; }}
-        </style>
-    </head>
+    html_content = f"""
+    <html><head><meta charset="utf-8">
+    <title>AI 决策仪表盘</title>
+    <style>
+        body {{ background: #0d1117; color: #ffd700; font-family: sans-serif; text-align: center; padding-top: 50px; }}
+        .card {{ background: #161b22; border: 2px solid #ffd700; border-radius: 20px; padding: 30px; margin: 30px auto; width: 70%; box-shadow: 0 0 20px rgba(255,215,0,0.1); }}
+        .score {{ font-size: 72px; color: #00ff00; font-weight: bold; }}
+        .symbol {{ color: #58a6ff; font-size: 18px; }}
+        .reason {{ border-top: 1px solid #30363d; margin-top: 20px; padding-top: 15px; color: #8b949e; line-height: 1.6; text-align: left; }}
+    </style></head>
     <body>
-        <div class="container">
-            <div class="header">
-                <h1>📈 AI 决策仪表盘</h1>
-                <p>系统更新时间：{report_date}</p>
-            </div>
+        <h1>📈 AI 股票决策仪表盘</h1>
+        <p>Gemini 智能分析时刻：{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
     """
-    
-    # 动态生成股票卡片 (直接用循环生成，不再用花括号)
-    cards_html = ""
-    for stock in stock_data:
-        cards_html += f"""
-            <div class="card">
-                <div class="score">{stock['score']}</div>
-                <h2 class="stock-name">{stock['name']} <small style="color:#58a6ff">{stock['symbol']}</small></h2>
-                <div class="advice">{stock['advice']}</div>
-                <div class="reason">
-                    <strong>Gemini 核心逻辑：</strong><br>
-                    {stock['reason']}
-                </div>
-            </div>
-        """
-    
-    html_end = """
-            <div style="text-align:center; margin-top:40px; color:#484f58; font-size:12px;">
-                提示：AI 生成内容仅供参考，不构成投资建议
+    for s in final_results:
+        html_content += f"""
+        <div class="card">
+            <h2><span class="symbol">{s['symbol']}</span> {s['advice']}</h2>
+            <div class="score">{s['score']}</div>
+            <div class="reason">
+                <strong>Gemini 核心分析逻辑：</strong><br>
+                {s['reason']}
             </div>
         </div>
-    </body>
-    </html>
+        """
+    html_content += f"""
+        <footer style="margin-top: 50px; color: #666;">系统运行正常 | 核心算法: Gemini | 部署环境: GitHub Actions</footer>
+    </body></html>
     """
     
-    # 合并并写入文件
-    full_html = html_start + cards_html + html_end
-    with open(html_path, "w", encoding="utf-8") as f:
-        f.write(full_html)
-    print(f"✅ 成功生成清晰版仪表盘: {html_path}")
+    with open("reports/index.html", "w", encoding="utf-8") as f:
+        f.write(html_content)
+    print("✅ 成功生成真实 AI 分析网页: reports/index.html")
 
 if __name__ == "__main__":
     generate_report()
