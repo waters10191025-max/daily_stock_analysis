@@ -4,53 +4,45 @@
         <meta charset="utf-8">
         <title>AI 决策仪表盘</title>
         <style>
-            body { background-color: #0d1117; color: #c9d1d9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; }
-            .container { max-width: 900px; margin: auto; }
-            .header { text-align: center; border-bottom: 2px solid #ffd700; padding-bottom: 20px; margin-bottom: 30px; }
-            .card { background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); overflow: hidden; }
-            .stock-name { color: #ffd700; font-size: 28px; margin-top: 0; display: inline-block; }
-            .symbol { font-size: 16px; color: #8b949e; margin-left: 10px; }
-            .score-box { float: right; text-align: right; width: 120px; }
-            .score { font-size: 72px; font-weight: bold; color: #39d353; line-height: 1; }
-            .score-label { font-size: 14px; color: #8b949e; }
-            .advice { display: inline-block; padding: 8px 18px; border-radius: 20px; margin-top: 15px; font-weight: bold; font-size: 18px; }
-            .advice-buy { background: #238636; color: white; }
-            .reason-box { border-top: 1px solid #30363d; margin-top: 20px; padding-top: 15px; }
-            .reason-label { font-size: 14px; color: #ffd700; font-weight: bold; }
-            .reason-text { line-height: 1.6; font-size: 15px; }
-            .footer { text-align: center; font-size: 12px; color: #8b949e; margin-top: 50px; }
+            body { background-color: #0d1117; color: #c9d1d9; font-family: sans-serif; padding: 20px; }
+            .container { max-width: 800px; margin: auto; }
+            .header { text-align: center; border-bottom: 2px solid #ffd700; padding-bottom: 20px; }
+            .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; margin-top: 20px; position: relative; }
+            .stock-name { color: #ffd700; font-size: 24px; margin: 0; }
+            .score { position: absolute; top: 20px; right: 20px; font-size: 48px; color: #39d353; font-weight: bold; }
+            .advice { display: inline-block; background: #238636; color: white; padding: 5px 15px; border-radius: 20px; margin: 10px 0; font-weight: bold; }
+            .reason { color: #8b949e; line-height: 1.6; border-top: 1px solid #30363d; padding-top: 10px; }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="header">
-                <h1>📈 AI 决策仪表盘已上线</h1>
-                <p>Gemini 智能分析时刻：2026-03-14</p>
+                <h1>📈 AI 决策仪表盘</h1>
+                <p>系统更新时间：2026-03-14 15:13</p>
             </div>
-            
-            # --- 关键修改：动态循环生成所有股票的卡片 ---
-            {% for _, stock in true_analysis_results.iterrows() %}
+    
             <div class="card">
-                <div class="score-box">
-                    <div class="score">{{ stock.score }}</div>
-                    <div class="score-label">Gemini 评分</div>
-                </div>
-                <div>
-                    <h2 class="stock-name">{{ stock.name }} <span class="symbol">{{ stock.symbol }}</span></h2>
-                    <div>
-                        <div class="advice {{ 'advice-buy' if '买入' in stock.advice else '' }}">{{ stock.advice }}</div>
-                    </div>
-                </div>
-                <div class="reason-box">
-                    <p class="reason-label">Gemini AI 分析核心逻辑：</p>
-                    <p class="reason-text">{{ stock.reason }}</p>
+                <div class="score">92</div>
+                <h2 class="stock-name">贵州茅台 <small style="color:#58a6ff">sh600519</small></h2>
+                <div class="advice">建议持有</div>
+                <div class="reason">
+                    <strong>Gemini 核心逻辑：</strong><br>
+                    技术面回踩支撑位，Gemini AI 监测到主力资金流入，短期情绪偏乐观。
                 </div>
             </div>
-            {% endfor %}
-
-            <div class="footer">
-                <p>部署环境: GitHub Actions | 核心算法: Gemini | 数据源: 私有脚本</p>
-                <p>声明：本报告为 AI 自动生成，不构成投资建议。</p>
+        
+            <div class="card">
+                <div class="score">78</div>
+                <h2 class="stock-name">金风科技 <small style="color:#58a6ff">002202</small></h2>
+                <div class="advice">观望</div>
+                <div class="reason">
+                    <strong>Gemini 核心逻辑：</strong><br>
+                    可再生能源板块近期波动较大，建议等待日线级别放量突破后再行介入。
+                </div>
+            </div>
+        
+            <div style="text-align:center; margin-top:40px; color:#484f58; font-size:12px;">
+                提示：AI 生成内容仅供参考，不构成投资建议
             </div>
         </div>
     </body>
