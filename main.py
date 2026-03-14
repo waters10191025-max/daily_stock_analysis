@@ -35,7 +35,7 @@ def generate_report():
     # 2. 关键步骤：生成 HTML 仪表盘
     if render_html:
         # 这里会查找项目里的 template.html 模板并生成精美网页
-        html_path = f"index.html"
+        html_path = "index.html"
         # 简化版 HTML 逻辑，确保你能看到仪表盘界面
         html_content = f"""
         <html>
